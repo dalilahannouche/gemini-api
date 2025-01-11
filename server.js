@@ -1,11 +1,12 @@
-require('dotenv').config(); // Charge les variables d'environnement à partir du fichier .env
+// server.js (Côté serveur)
+require('dotenv').config();  // Charger les variables d'environnement
 
 const express = require('express');
 const fetch = require('node-fetch');
+const cors = require('cors');
 const app = express();
 
-// Récupère la clé API depuis les variables d'environnement
-const apiKey = process.env.API_KEY;
+const apiKey = process.env.API_KEY;  // Récupérer la clé API depuis les variables d'environnement
 
 app.use(express.json());
 
@@ -23,14 +24,14 @@ app.post('/chat', (req, res) => {
     .catch(error => res.status(500).json({ error: 'Erreur interne du serveur' }));
 });
 
-app.listen(3000, () => {
-  console.log('Serveur démarré sur http://localhost:3000');
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Serveur démarré sur le port ${process.env.PORT || 3000}`);
 });
 
-const cors = require('cors');
 app.use(cors({
-  origin: 'https://portfolio2-webdev.wuaze.com'  // Remplacez par votre domaine en ligne
+  origin: 'https://portfolio2-webdev.wuaze.com'
 }));
+
 
 
 //app.listen(3000, () => {
