@@ -8,8 +8,18 @@ const app = express();
 
 const apiKey = process.env.API_KEY;  // Récupérer la clé API depuis les variables d'environnement
 
+app.use(cors({
+  origin: 'https://portfolio2-webdev.wuaze.com'  // Autoriser cette origine
+}));
+
 app.use(express.json());
 
+// Route pour tester l'API
+app.get('/', (req, res) => {
+  res.send('API fonctionne correctement !');
+});
+
+// Route POST pour le chatbot
 app.post('/chat', (req, res) => {
   fetch('https://api.chatbot.com/endpoint', {
     method: 'POST',
@@ -24,13 +34,10 @@ app.post('/chat', (req, res) => {
     .catch(error => res.status(500).json({ error: 'Erreur interne du serveur' }));
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Serveur démarré sur le port ${process.env.PORT || 3000}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Serveur démarré sur le port ${port}`);
 });
-
-app.use(cors({
-  origin: 'https://portfolio2-webdev.wuaze.com'
-}));
 
 
 
