@@ -8,8 +8,9 @@ const app = express();
 
 const apiKey = process.env.API_KEY;  // Récupérer la clé API depuis les variables d'environnement
 
+// CORS configuration
 app.use(cors({
-  origin: 'https://portfolio2-webdev.wuaze.com'  // Autoriser cette origine
+  origin: 'https://portfolio2-webdev.wuaze.com'  // Autoriser le domaine de votre site en ligne
 }));
 
 app.use(express.json());
@@ -20,37 +21,32 @@ app.get('/', (req, res) => {
 });
 
 // Route POST pour le chatbot
-app.post('/chat', (req, res) => {
+app.post('/api/chat', (req, res) => {
+  const { message } = req.body;
+
+  // Exemple d'appel à un modèle externe (Gemini API ou autre)
   fetch('https://api.chatbot.com/endpoint', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
+      'Authorization': `Bearer ${apiKey}` // Utiliser la clé API pour authentifier la requête
     },
-    body: JSON.stringify(req.body)
+    body: JSON.stringify({
+      input: message // Passer le message de l'utilisateur à l'API
+    })
   })
     .then(response => response.json())
-    .then(data => res.json(data))
-    .catch(error => res.status(500).json({ error: 'Erreur interne du serveur' }));
+    .then(data => {
+      // Retourner la réponse du modèle
+      res.json({ message: data.reply || 'Désolé, je n\'ai pas compris votre demande.' });
+    })
+    .catch(error => {
+      console.error("Erreur lors de l'appel à l'API:", error);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+    });
 });
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Serveur démarré sur le port ${port}`);
 });
-
-
-
-//app.listen(3000, () => {
-//  console.log('Serveur démarré sur http://localhost:3000');
-//});
-
-//const PORT = process.env.PORT || 3000; // Render fournit automatiquement le PORT via les variables d'environnement.
-//app.listen(PORT, () => {
-//  console.log(`Serveur démarré sur http://localhost:${PORT}`);
-//});
-
-//const cors = require('cors');
-//app.use(cors({
-//  origin: 'https://portfolio2-webdev.wuaze.com'  // Remplacez par votre domaine en ligne
-//}));
