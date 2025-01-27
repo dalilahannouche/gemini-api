@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = "AIzaSyCShetP-sC0OOT1x6DIUm6cPBwgo9i0WBY";
+const API_KEY = "AIzaSyClgkIB3AYXyEIA9Gc0ST5E109R9hNCRl8";
 
 const portfolioLink = "https://dalilahannouche.wixsite.com/portfolio";
 const linkedinLink = "https://www.linkedin.com/in/dalila-h-8a6896143";
